@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#172554">
+<title>Office Lab — интерактивный тренажёр</title>
+<style>
+:root{--navy:#172554;--blue:#3156d9;--violet:#7657e8;--cyan:#22c7c7;--ink:#18233f;--muted:#6b7691;--paper:#f5f7ff;--line:#e4e9f5;--white:#fff;--green:#12845b;--red:#c44858}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--paper);color:var(--ink);line-height:1.55}
+button,input{font:inherit}button{cursor:pointer}
+.hero{background:radial-gradient(circle at 85% 10%,#526fe5 0,transparent 28%),linear-gradient(125deg,#111d49,#283d91 62%,#5848b9);color:white;padding:34px max(22px,calc((100% - 1160px)/2)) 42px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:46px}.brand{font-weight:900;letter-spacing:.5px;font-size:20px}.brand span{color:#6ee7e1}.top small{color:#dce5ff}
+.hero-content{max-width:760px}.eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:800;color:#a9fff4}.hero h1{font-size:clamp(34px,6vw,58px);line-height:1.04;margin:12px 0 18px;letter-spacing:-1.8px}.hero p{font-size:17px;color:#e1e8ff;max-width:650px;margin:0}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.btn{border:0;border-radius:13px;padding:12px 18px;font-weight:800;transition:.2s}.btn:hover{transform:translateY(-2px)}.btn-primary{background:#fff;color:#203477}.btn-ghost{background:#ffffff18;color:#fff;border:1px solid #ffffff55}
+main{max-width:1160px;margin:auto;padding:28px 20px 70px}.progress-wrap{background:white;border:1px solid var(--line);border-radius:18px;padding:18px 20px;margin-top:-2px;box-shadow:0 12px 35px #1b2c6510}.progress-head{display:flex;justify-content:space-between;gap:12px;font-weight:800}.progress-track{height:9px;background:#edf0fa;border-radius:99px;margin-top:12px;overflow:hidden}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:99px;transition:width .35s}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:34px 0 16px}.section-head h2{font-size:25px;margin:0}.section-head p{color:var(--muted);margin:3px 0 0;font-size:14px}
+.course-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.course{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 8px 25px #1b2c6508;position:relative;overflow:hidden}.course:after{content:"";position:absolute;width:120px;height:120px;border-radius:50%;right:-48px;top:-55px;background:var(--tint)}.course-icon{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;font-size:23px;background:var(--tint);position:relative;z-index:1}.course h3{margin:14px 0 4px;font-size:19px}.course p{color:var(--muted);font-size:13px;min-height:42px;margin:0 0 15px}.course-meta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-bottom:14px}.course .btn{width:100%;background:var(--navy);color:white}.course.done{border-color:#8ed8bd}.course.done .btn{background:#e6f7f0;color:#08734e}
+.workspace{display:grid;grid-template-columns:245px 1fr;gap:18px;margin-top:30px}.sidebar,.panel{background:#fff;border:1px solid var(--line);border-radius:20px}.sidebar{padding:15px;height:max-content}.side-title{font-weight:900;padding:5px 8px 12px}.nav-item{width:100%;text-align:left;border:0;background:transparent;padding:11px 10px;border-radius:11px;color:#53607e;font-weight:700;margin:2px 0}.nav-item.active{background:#edf1ff;color:#2948b8}.nav-item .tick{float:right;color:var(--green)}.panel{padding:clamp(18px,3vw,30px);min-height:420px}.panel h2{font-size:26px;margin:0 0 5px}.sub{color:var(--muted);margin:0 0 22px}.lesson{background:#f4f6ff;border:1px solid #e7ebff;border-radius:15px;padding:17px;margin:15px 0}.lesson h3{margin:0 0 8px;font-size:16px}.lesson p{margin:6px 0;color:#4e5b79}.code{background:#17213d;color:#dce8ff;padding:12px 14px;border-radius:10px;font:13px/1.7 Consolas,monospace;overflow:auto;margin-top:10px}.task{border:1px solid var(--line);border-radius:15px;padding:16px;margin:12px 0}.task strong{display:block;margin-bottom:7px}.task small{color:var(--muted)}.task-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}.task input{accent-color:var(--blue);width:18px;height:18px}.quiz-q{padding:16px;border:1px solid var(--line);border-radius:14px;margin:13px 0}.quiz-q p{font-weight:800;margin:0 0 10px}.option{display:flex;align-items:flex-start;gap:9px;padding:7px 8px;border-radius:9px;color:#4b5876}.option:hover{background:#f4f6ff}.option input{margin-top:5px;accent-color:var(--blue)}.feedback{font-size:13px;margin-top:8px;font-weight:700}.feedback.good{color:var(--green)}.feedback.bad{color:var(--red)}
+.result{background:#effaf5;border:1px solid #c9efdc;border-radius:14px;padding:15px;margin:16px 0}.certificate{background:linear-gradient(135deg,#fff,#f5f7ff);border:8px double #b7a3ee;padding:28px;text-align:center;border-radius:18px;margin-top:18px}.certificate .seal{font-size:38px}.certificate h2{font-family:Georgia,serif;color:#273b86;font-size:30px;margin:8px}.certificate h3{font-size:14px;letter-spacing:2px;color:#7c63c8;text-transform:uppercase}.certificate .name{border-bottom:1px solid #9ba8d0;display:inline-block;min-width:220px;padding:8px;margin:14px 0;font-size:23px;font-family:Georgia,serif}.certificate p{color:#56617d}.certificate .cert-foot{display:flex;justify-content:space-between;gap:12px;margin-top:22px;font-size:12px;color:#65708d}.hidden{display:none!important}.muted{color:var(--muted)}.notice{font-size:12px;color:var(--muted);margin-top:18px}.footer{text-align:center;color:#8490aa;font-size:12px;padding:22px}
+@media(max-width:800px){.course-grid{grid-template-columns:1fr}.workspace{grid-template-columns:1fr}.sidebar{display:flex;overflow:auto;gap:5px}.side-title{display:none}.nav-item{white-space:nowrap;width:auto}.hero{padding-top:24px}.top{margin-bottom:32px}}
+@media print{body{background:white}.hero,main>*:not(#certificateArea),.footer{display:none!important}#certificateArea{display:block!important;padding:0}.certificate{margin:25px auto;max-width:850px;min-height:540px;display:flex;flex-direction:column;justify-content:center;break-inside:avoid}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="top"><div class="brand">OFFICE <span>LAB</span></div><small>Учись • Практикуйся • Подтверждай навыки</small></div>
+  <div class="hero-content">
+    <div class="eyebrow">Интерактивная академия цифровых навыков</div>
+    <h1>Уверенно работай<br>с Office</h1>
+    <p>Изучай Word, Excel и PowerPoint на коротких уроках, выполняй практические задания и проходи проверку знаний. За результаты получишь именной сертификат.</p>
+    <div class="hero-actions"><button class="btn btn-primary" onclick="document.getElementById('courses').scrollIntoView({behavior:'smooth'})">Начать обучение →</button><button class="btn btn-ghost" onclick="showView('certificate')">Мой сертификат</button></div>
+  </div>
+</header>
+<main>
+  <section class="progress-wrap">
+    <div class="progress-head"><span>Твой прогресс</span><span id="progressText">0 из 3 курсов завершено</span></div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </section>
+  <section id="courses">
+    <div class="section-head"><div><h2>Выбери программу</h2><p>Три курса — от основ до практических навыков.</p></div></div>
+    <div class="course-grid" id="courseCards"></div>
+  </section>
+  <section class="workspace">
+    <aside class="sidebar">
+      <div class="side-title">МОЁ ОБУЧЕНИЕ</div>
+      <button class="nav-item active" id="nav-word" onclick="openCourse('word')">▤ Word</button>
+      <button class="nav-item" id="nav-excel" onclick="openCourse('excel')">▦ Excel</button>
+      <button class="nav-item" id="nav-powerpoint" onclick="openCourse('powerpoint')">▧ PowerPoint</button>
+      <button class="nav-item" id="nav-certificate" onclick="showView('certificate')">✧ Сертификат</button>
+    </aside>
+    <section class="panel" id="learningPanel"></section>
+  </section>
+  <section id="certificateArea" class="hidden">
+    <div class="section-head"><div><h2>Итоговый сертификат</h2><p>Сертификат станет доступен после завершения всех трёх курсов.</p></div></div>
+    <div id="certificateContent"></div>
+  </section>
+  <p class="notice">Важно: это учебный тренажёр. Практические задания отмечаются самостоятельно, а тесты проверяются автоматически. Сертификат подтверждает результаты внутри этого тренажёра, а не является официальным документом Microsoft.</p>
+</main>
+<div class="footer">OFFICE LAB · Учись в своём темпе</div>
+<script>
+const courses={
+word:{title:"Microsoft Word",icon:"▤",color:"#eaf0ff",desc:"Документы, форматирование и таблицы",time:"15–20 минут",lessons:[
+{title:"1. Знакомство с документом",body:"Word используют для создания текстовых документов: заявлений, рефератов, писем и отчётов. Сохраняй работу регулярно и выбирай понятное имя файла.",tip:"Файл → Сохранить как → выбери папку и формат .docx."},
+{title:"2. Форматирование текста",body:"Выдели текст, чтобы изменить шрифт, размер, цвет, начертание и выравнивание. Заголовки помогают сделать документ структурированным.",tip:"Главная → Шрифт: полужирный, курсив, размер. Главная → Абзац: выравнивание и интервалы."},
+{title:"3. Списки и таблицы",body:"Маркированный список подходит для перечислений, нумерованный — для последовательности шагов. Таблицы упорядочивают информацию по строкам и столбцам.",tip:"Вставка → Таблица. Выбери нужное количество строк и столбцов."}],
+tasks:["Создай документ «Мой первый документ» и напиши заголовок и два предложения.","Сделай заголовок полужирным, размером 16 pt и выровняй по центру.","Добавь таблицу 2 × 3 и заполни её учебным расписанием."],
+quiz:[
+["Какое расширение обычно имеет документ Word?",[".xlsx",".docx",".pptx",".jpg"],1,"Документы Word обычно сохраняются в формате .docx."],
+["Какая команда делает текст полужирным?",["Курсив","Подчёркивание","Полужирный (B)","Нижний индекс"],2,"Кнопка B включает полужирное начертание."],
+["Где обычно находится команда добавления таблицы?",["Вставка","Рецензирование","Вид","Макет страницы"],0,"Таблицы добавляют через вкладку «Вставка»."]
+]},
+excel:{title:"Microsoft Excel",icon:"▦",color:"#e5f8ef",desc:"Таблицы, формулы и диаграммы",time:"15–20 минут",lessons:[
+{title:"1. Ячейки и диапазоны",body:"Лист Excel состоит из строк и столбцов. Ячейка обозначается буквой столбца и номером строки, например A1. Диапазон — группа ячеек.",tip:"A1 — одна ячейка. A1:C3 — диапазон от A1 до C3."},
+{title:"2. Формулы и функции",body:"Формула начинается со знака =. Функция SUM складывает значения, AVERAGE вычисляет среднее, MAX находит наибольшее значение.",tip:"=SUM(B2:B6) — сумма значений в ячейках B2–B6."},
+{title:"3. Диаграммы и сортировка",body:"Диаграмма помогает сравнивать данные визуально. Сортировка упорядочивает записи, а фильтр показывает только строки, соответствующие условию.",tip:"Выдели данные → Вставка → Диаграмма. Для сортировки используй вкладку «Данные»."}],
+tasks:["Создай таблицу с тремя предметами и оценками в двух столбцах.","Введи формулу =SUM(B2:B4), чтобы получить сумму оценок.","Построй столбчатую диаграмму по своей таблице."],
+quiz:[
+["Как обозначается ячейка на пересечении столбца B и строки 4?",["4B","B4","BB4","B-4"],1,"Сначала пишется буква столбца, затем номер строки."],
+["С какого символа начинается формула Excel?",["+","=","#","@"],1,"Знак равенства сообщает Excel, что далее идёт формула."],
+["Какая функция вычисляет сумму диапазона?",["AVERAGE","MAX","SUM","COUNT"],2,"SUM складывает числа из выбранных ячеек."]
+]},
+powerpoint:{title:"Microsoft PowerPoint",icon:"▧",color:"#fff0e8",desc:"Презентации, дизайн и выступление",time:"15–20 минут",lessons:[
+{title:"1. Структура презентации",body:"Презентация состоит из слайдов. Обычно она включает титульный слайд, основную часть и заключение. Один слайд — одна главная мысль.",tip:"Главная → Создать слайд. Выбери макет под содержание."},
+{title:"2. Дизайн слайдов",body:"Используй 2–3 сочетающихся цвета и не перегружай слайды текстом. Заголовки должны быть заметными, а изображения — помогать понять тему.",tip:"Вкладка «Дизайн» позволяет выбрать тему и варианты оформления."},
+{title:"3. Переходы и показ",body:"Переходы задают способ смены слайдов. Анимация применяется к отдельным объектам. Перед выступлением проверь презентацию в режиме показа слайдов.",tip:"Переходы → выбери эффект. Показ слайдов → С начала."}],
+tasks:["Создай презентацию из трёх слайдов на тему «Моя будущая профессия».","Добавь заголовок, короткий текст и изображение на один из слайдов.","Выбери единую тему оформления и запусти показ с начала."],
+quiz:[
+["Как называется одна отдельная страница презентации?",["Лист","Слайд","Ячейка","Страница документа"],1,"Отдельная страница презентации называется слайдом."],
+["Где выбирают тему оформления презентации?",["Дизайн","Формулы","Рецензирование","Рассылки"],0,"Вкладка «Дизайн» содержит темы оформления."],
+["Что делает режим «Показ слайдов»?",["Считает значения","Показывает презентацию на весь экран","Проверяет орфографию","Создаёт таблицу"],1,"Этот режим предназначен для демонстрации презентации."]
+]}
+};
+let state=JSON.parse(localStorage.getItem("officeLabState")||'{"done":{},"scores":{},"answers":{}}');
+let current="word",view="course";
+function save(){localStorage.setItem("officeLabState",JSON.stringify(state));updateProgress();renderCards()}
+function updateProgress(){let n=Object.keys(courses).filter(k=>state.done[k]).length;document.getElementById("progressText").textContent=n+" из 3 курсов завершено";document.getElementById("progressFill").style.width=(n/3*100)+"%"}
+function renderCards(){document.getElementById("courseCards").innerHTML=Object.entries(courses).map(([k,c])=>`<article class="course ${state.done[k]?'done':''}" style="--tint:${c.color}"><div class="course-icon">${c.icon}</div><h3>${c.title}</h3><p>${c.desc}</p><div class="course-meta"><span>${c.time}</span><span>${state.done[k]?'✓ Завершён':'3 задания + тест'}</span></div><button class="btn" onclick="openCourse('${k}')">${state.done[k]?'Повторить курс':'Открыть курс →'}</button></article>`).join("")}
+function setActiveNav(id){document.querySelectorAll(".nav-item").forEach(x=>x.classList.remove("active"));let el=document.getElementById("nav-"+id);if(el)el.classList.add("active")}
+function openCourse(k){current=k;view="course";document.getElementById("certificateArea").classList.add("hidden");document.querySelector(".workspace").classList.remove("hidden");setActiveNav(k);renderCourse()}
+function renderCourse(){let c=courses[current];let tasksDone=state.done[current+"_tasks"]||[];let score=state.scores[current];let p=document.getElementById("learningPanel");p.innerHTML=`<h2>${c.icon} ${c.title}</h2><p class="sub">${c.desc} · короткие уроки, практика и тест</p><h3>Краткие уроки</h3>${c.lessons.map(l=>`<div class="lesson"><h3>${l.title}</h3><p>${l.body}</p><div class="code">${l.tip}</div></div>`).join("")}<h3 style="margin-top:25px">Практические задания</h3><p class="sub">Выполни задания в установленной программе и отметь каждый готовый результат.</p>${c.tasks.map((t,i)=>`<div class="task"><strong>Задание ${i+1}</strong>${t}<div class="task-row"><input type="checkbox" id="task${i}" ${tasksDone[i]?'checked':''} onchange="toggleTask(${i},this.checked)"><label for="task${i}">Я выполнил(а) задание</label></div></div>`).join("")}<div class="task-row"><button class="btn" style="background:#edf1ff;color:#2948b8" onclick="startQuiz()">Перейти к тесту →</button><span class="muted">${tasksDone.filter(Boolean).length}/3 заданий отмечено</span></div><div id="quizArea"></div>${score!==undefined?`<div class="result">Последний результат теста: <b>${score}/3</b>. ${state.done[current]?'Курс завершён!':'Для завершения отметь все задания и набери не менее 2 правильных ответов.'}</div>`:''}`}
+function toggleTask(i,v){if(!state.done[current+"_tasks"])state.done[current+"_tasks"]=[false,false,false];state.done[current+"_tasks"][i]=v;save();renderCourse()}
+function startQuiz(){let c=courses[current],area=document.getElementById("quizArea");area.innerHTML=`<h3 style="margin-top:28px">Итоговый тест</h3><p class="sub">Выбери один правильный ответ в каждом вопросе.</p>`+c.quiz.map((q,i)=>`<div class="quiz-q" id="q${i}"><p>${i+1}. ${q[0]}</p>${q[1].map((o,j)=>`<label class="option"><input type="radio" name="answer${i}" value="${j}"> ${o}</label>`).join("")}<div class="feedback" id="fb${i}"></div></div>`).join("")+`<button class="btn" style="background:#3156d9;color:white;margin-top:10px" onclick="checkQuiz()">Проверить ответы</button><div id="quizResult"></div>`;area.scrollIntoView({behavior:"smooth",block:"start"})}
+function checkQuiz(){let c=courses[current],score=0,all=true;let answers=[];c.quiz.forEach((q,i)=>{let chosen=document.querySelector(`input[name="answer${i}"]:checked`);if(!chosen)all=false;let val=chosen?Number(chosen.value):-1;answers.push(val);let ok=val===q[2];if(ok)score++;let fb=document.getElementById("fb"+i);fb.className="feedback "+(ok?"good":"bad");fb.textContent=chosen?(ok?"Верно! ":"Неверно. ")+q[3]:"Ответ не выбран. "+q[3]});if(!all){document.getElementById("quizResult").innerHTML='<p class="feedback bad">Ответь на все вопросы, чтобы увидеть итоговый результат.</p>';return}state.answers[current]=answers;state.scores[current]=score;let tasks=state.done[current+"_tasks"]||[];let passed=score>=2&&tasks.filter(Boolean).length===3;state.done[current]=passed;save();document.getElementById("quizResult").innerHTML=`<div class="result"><b>Твой результат: ${score} из 3.</b><br>${passed?"Поздравляем! Курс успешно завершён. 🎉":"Пока курс не завершён. Нужно отметить все 3 практических задания и набрать минимум 2 из 3 в тесте. Можно повторить попытку."}</div>`;renderCards();updateProgress()}
+function showView(v){view=v;setActiveNav("certificate");document.querySelector(".workspace").classList.add("hidden");let a=document.getElementById("certificateArea");a.classList.remove("hidden");let passed=Object.keys(courses).every(k=>state.done[k]);if(!passed){let missing=Object.keys(courses).filter(k=>!state.done[k]).map(k=>courses[k].title);document.getElementById("certificateContent").innerHTML=`<div class="lesson"><h3>Сертификат пока недоступен</h3><p>Сначала заверши все три курса: выполни по три практических задания и набери минимум 2 правильных ответа из 3 в каждом тесте.</p><p><b>Осталось завершить:</b> ${missing.join(", ")}.</p><button class="btn" style="background:#3156d9;color:white" onclick="openCourse('${Object.keys(courses).find(k=>!state.done[k])}')">Продолжить обучение</button></div>`;return}document.getElementById("certificateContent").innerHTML=`<div class="certificate"><div class="seal">✦</div><h3>Certificate of achievement</h3><h2>Сертификат об успешном обучении</h2><p>Настоящий сертификат подтверждает, что</p><input id="studentName" placeholder="Введи имя и фамилию" style="border:0;border-bottom:1px solid #9ba8d0;background:transparent;text-align:center;font:22px Georgia;padding:8px;max-width:100%;width:310px;color:#273b86" value="${localStorage.getItem('officeLabName')||''}"><p>успешно завершил(а) интерактивные курсы по программам</p><h2 style="font-size:22px">Word · Excel · PowerPoint</h2><p>и выполнил(а) практические задания и итоговые тесты.</p><div class="cert-foot"><span>OFFICE LAB</span><span>Дата: ${new Date().toLocaleDateString("ru-RU")}</span><span>Результаты: ${Object.keys(courses).map(k=>state.scores[k]+"/3").join(" · ")}</span></div></div><div class="task-row" style="justify-content:center"><button class="btn" style="background:#3156d9;color:white" onclick="printCert()">Распечатать / сохранить PDF</button></div><p class="notice">Перед печатью введи имя и фамилию. В окне печати выбери «Сохранить как PDF».</p>`}
+function printCert(){let n=document.getElementById("studentName").value.trim();if(!n){alert("Сначала введи имя и фамилию.");return}localStorage.setItem("officeLabName",n);window.print()}
+renderCards();updateProgress();renderCourse();
+</script>
+</body>
+</html>
